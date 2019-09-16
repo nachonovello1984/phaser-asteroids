@@ -16,6 +16,7 @@ export default class Asteroid extends Phaser.Physics.Arcade.Sprite {
     }
 
     fire(shipX, shipY) {
+
         this.orbiting = true;
 
         this.setActive(true);

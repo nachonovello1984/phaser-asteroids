@@ -7,6 +7,7 @@ export default class PlayScene extends Phaser.Scene {
         super({ key: 'PlayScene', active: true });
         this.lastFired = 0;
         this.asteroidElapsedTime = 3000;
+        this.gameOver = false;
     }
 
     preload() {
@@ -28,6 +29,7 @@ export default class PlayScene extends Phaser.Scene {
         this.ship.setDrag(0.99);
         this.ship.setMaxVelocity(200);
         this.ship.setCollideWorldBounds(true);
+        this.ship.setSize(20, 30);
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -47,9 +49,17 @@ export default class PlayScene extends Phaser.Scene {
             callbackScope: this,
             loop: true
         });
+
+        this.physics.add.overlap(this.ship, this.asteroidsGroup, this.hitShip, null, this);
+        this.physics.add.collider(this.shootsGroup, this.asteroidsGroup, this.hitShoot, null, this);
     }
 
     update(time, delta) {
+
+        if (this.gameOver) {
+            return;
+        }
+
         if (this.cursors.up.isDown) {
             this.physics.velocityFromRotation(this.ship.rotation, 200, this.ship.body.acceleration);
         } else {
@@ -92,5 +102,19 @@ export default class PlayScene extends Phaser.Scene {
         this.asteroidsGroup.add(asteroid, true);
         this.asteroidsArray.push(asteroid);
 
+    }
+
+    hitShip(ship, asteroid) {
+        this.physics.pause();
+        this.asteroidsTimedEvent.paused = true;
+
+        ship.body.setImmovable(true);
+        ship.setTint(0xff0000);
+
+        this.gameOver = true;
+    }
+
+    hitShoot(shoot, asteroid) {
+        asteroid.disableBody(true, true);
     }
 }
