@@ -9,6 +9,7 @@ export default class Asteroid extends Phaser.Physics.Arcade.Sprite {
         this.orbiting = false;
         this.direction = 0;
         this.factor = 1;
+        
     }
 
     isOrbiting(){
@@ -16,7 +17,7 @@ export default class Asteroid extends Phaser.Physics.Arcade.Sprite {
     }
 
     fire(shipX, shipY) {
-
+        this.setSize(32, 29);
         this.orbiting = true;
 
         this.setActive(true);

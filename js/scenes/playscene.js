@@ -107,9 +107,9 @@ export default class PlayScene extends Phaser.Scene {
     hitShip(ship, asteroid) {
         this.physics.pause();
         this.asteroidsTimedEvent.paused = true;
-
-        ship.body.setImmovable(true);
-        ship.setTint(0xff0000);
+        
+        this.ship.setTint(0xff0000);
+        this.ship.body.allowRotation = false;
 
         this.gameOver = true;
     }
